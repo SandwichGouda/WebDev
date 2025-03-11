@@ -10,62 +10,8 @@ console.log(a.maxCountWord())
 
 console.log(a.minCountWord())
 
-export class WrdLst {
-    constructor(str) {
-        this.str = str;
-    }
-    getWords() {
-        let t = [];
-        for (let word in wordc(this.str)) {
-            if (!t.includes(word)) {
-                t.push(word);
-            }
-        }
-        t.sort();
-        return t
-    }
+console.log(a.getCount("fish"))
 
-    maxCountWord() {
-        let max = 0;
-        let wc = wordc(this.str);
-        for (let wd in wc) {
-            if (wc[wd] > max) {
-                max = wc[wd];
-            }
-        }
-        
-        let argmax = [];
-        for (let wd in wc) {
-            if (wc[wd] === max) {
-                argmax.push(wd)
-            }
-        }
-        argmax.sort();
-        return argmax[0]
-    }
+console.log(a.getCount("bowl"))
 
-    minCountWord() {
-        let wc = wordc(this.str);
-        
-        let min = 0 ;
-        for (let wd in wc) {
-            min = wc[wd];
-            break;
-        }
-
-        for (let wd in wc) {
-            if (wc[wd] < min) {
-                min = wc[wd];
-            }
-        }
-        
-        let argmin = [];
-        for (let wd in wc) {
-            if (wc[wd] === min) {
-                argmin.push(wd)
-            }
-        }
-        argmin.sort();
-        return argmin[0]
-    }
-}
+console.log(a.applyFunc((x) => x[0]))
