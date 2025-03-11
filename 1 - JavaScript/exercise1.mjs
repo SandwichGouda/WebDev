@@ -13,3 +13,34 @@ export function fiboIt(n) {
     return a
 }
 
+// recursive function
+export function fibo_rec(n) {
+    if (n === 0 || n === 1) {
+        return n
+    } else {
+        return fibo_rec(n-1) + fibo_rec(n-2)
+    }
+}
+
+// process array with a loop
+export function fiboArr(t) {
+    let arr = []
+    let n = t.length
+    for (let k of t) {
+        arr.push(fibo_rec(k))
+    }
+    return arr
+}
+
+export function fiboArr2(t) {
+    let arr = []
+    for (let k of t) {
+        arr.push(fibo_rec(k))
+    }
+    return arr
+}
+
+// using map
+export function fibMap(t) {
+    return t.map(fibo_rec)
+}
