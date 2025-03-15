@@ -12,3 +12,16 @@ export class Stud {
         return "student: "+this.lastName+", "+this.firstName+", "+this.id
     }
 }
+
+export class ForeignStud extends Stud {
+
+    constructor(lastName, firstName, id, nationality) {
+        super(lastName, firstName, id);
+
+        this.nationality = nationality;
+    }
+
+    toString() {
+        return "student: "+this.lastName+", "+this.firstName+", "+this.id+", "+this.nationality
+    }
+}
