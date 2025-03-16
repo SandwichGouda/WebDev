@@ -50,4 +50,23 @@ export class Promo {
             this.students.push(student); // Add the reconstructed student
         }
     }
+
+    saveFile(fileName) {
+        try {
+            fs.writeFileSync(fileName, this.write(), "utf-8");
+            console.log(`Promotion saved to ${fileName}`);
+        } catch (error) {
+            console.error(`Error saving file: ${error.message}`);
+        }
+    }
+
+    readFile(fileName) {
+        try {
+            let data = fs.readFileSync(fileName, "utf-8");
+            this.read(data);
+            console.log(`Promotion loaded from ${fileName}`);
+        } catch (error) {
+            console.error(`Error reading file: ${error.message}`);
+        }
+    }
 }

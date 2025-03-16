@@ -1,3 +1,4 @@
+
 import {ForeignStud, Stud} from "./exercise3.mjs"
 import {Promo} from "./exercise4.mjs"
 import fs from "fs";
@@ -17,3 +18,29 @@ Pr.add(Fstudent);
 // Pr.print()
 // console.log(Pr.print())
 // console.log(Pr.write());
+
+let Pr2 = new Promo() ;
+
+Pr2.read(
+`[
+    {
+        "lastName": "Dupond",
+        "firstName": "John",
+        "id": 1835
+    },
+    {
+        "lastName": "Wang",
+        "firstName": "ChingChong",
+        "id": 434,
+        "nationality": "中或汉语"
+    }
+]`)
+
+console.log(Pr2);
+console.log(Pr2.write());
+
+console.log(Pr2.saveFile("promo.json"));
+
+let Pr3 = new Promo();
+
+Pr3.readFile("promo.json");
