@@ -1,0 +1,26 @@
+#id1 {
+    border: 1px solid black; 
+    padding: 11px;
+}
+
+img {
+    float: left; 
+    padding: 11px;
+}
+
+#id3 {
+    background-color: dimgrey;
+    margin: 10px;
+}
+
+/* 
+What changes here is that we import a `.css` file in the HTML document.
+
+One the one hand, it allows to further separate "le fond et la forme". It is much cleaner and much more organized that way, rather than putting the CSS into the same file as HTML : `.html` files are kept for HTML and `.css` files for CSS.
+It also allows to re-use the same stylesheets for different pages, instead of copy-pasting the code over and over avain in all HTML documents.
+Also, it improves flexibility and reduces the technical debt, in the sense that it allows to change all styles of ALL pages at once rather than having to edit all <style></style> independently, which could besides, lead to errors.
+It also allows browsers to keep the `.css` stylesheet files in cache, allowing them to not reload them each time.
+Finally, this method enables CSS frameworks such as Tailwind CSS or Bootstrap to work, by linking to external CSS stylesheets, i.e. that are not written by you, and hosted elsewhere (and hence that will not be served by your web server).
+
+On the other hand, some people might find it annoying to have to navigate and having to constantly switch between separate files. It is not my case but who knows.
+*/
