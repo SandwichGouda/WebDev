@@ -18,3 +18,59 @@ function load() {
     }
     xhr.send();
 }
+
+load();
+
+function updateSlide() {
+    div = document.getElementById("TOP");
+    div.innerHTML = "";
+
+    let frame = document.createElement("iframe");
+    frame.src = slides.slides[counter].url;
+    frame.height = "100%";
+    frame.width = "100%";
+    
+    div.appendChild(frame);
+}
+
+function play() {
+    counter++;
+    
+    div = document.getElementById("TOP");
+    div.innerHTML = "";
+
+    updateSlide();
+
+    if (counter < numberOfSlides && !pause) {
+        timeout = setTimeout(play, 2000);
+    }
+}
+
+function pauseBut() {
+    if (!pause) {
+        pause = true;
+        clearTimeout(timeout);
+    } else {
+        pause = false;
+        play();
+    }
+}
+
+function next() {
+    pause = true;
+    
+    if (counter < numberOfSlides) {
+        counter++;
+        updateSlide();
+    
+    } else { return; }
+}
+
+function previous() {
+    pause = true;
+    
+    if (counter > 0) {
+        counter--;
+        updateSlide();
+    } else { return; }
+}
