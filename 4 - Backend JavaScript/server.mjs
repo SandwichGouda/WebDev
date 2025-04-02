@@ -64,6 +64,13 @@ function webserver( request, response ) {
             response.setHeader("Content-Type", "text/html; charset=utf-8"); 
             response.end("<!doctype html><html><body>ciao "+user+", the following users have already visited this page: "+users.join(", ")+"</body></html>");
             users.push(user);
+        } else if (request.url.slice(0,6) === "/clear") {
+            users = [];
+            response.setHeader("Content-Type", "text/html; charset=utf-8"); 
+            response.end("<!doctype html><html><body>ciao "+user+", the following users have already visited this page: "+users.join(", ")+"</body></html>");
+        } else {
+            response.setHeader("Content-Type", "text/html; charset=utf-8"); 
+            response.end("<!doctype html><html><body>Server is working</body></html>");
         }
     } catch (error) {
         console.error(error)
