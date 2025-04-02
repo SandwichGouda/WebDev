@@ -53,7 +53,17 @@ function webserver( request, response ) {
                 response.end(rfs); 
                 // The response.end is important, it allows to set the HTML responded
                 // It also sens the response ! (!!!)(imporant : that means you can't set headers afterwards)
-            }   
+            }  
+        } else if (request.url.slice(0,16) === "/hallo?visiteur=" && request.method === "GET") {
+            response.setHeader("Content-Type", "text/html; charset=utf-8"); 
+            response.end("<!doctype html><html><body>hallo "+decodeURIComponent(request.url.slice(16))+"</body></html>");
+        } else if (request.url.slice(0,11) === "/ciao?user=") {
+            user = request.url.slice(11);
+            user.replace("<","_");
+            user.replace(">","_")
+            response.setHeader("Content-Type", "text/html; charset=utf-8"); 
+            response.end("<!doctype html><html><body>ciao "+user+", the following users have already visited this page: "+users.join(", ")+"</body></html>");
+            users.push(user);
         }
     } catch (error) {
         console.error(error)
