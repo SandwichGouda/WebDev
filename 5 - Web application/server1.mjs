@@ -103,7 +103,8 @@ function webserver( request, response ) {
             writeFileSync("storage.json",JSON.stringify(storage_));
         } else if (request.url.slice(0,6) === "/clear") {
             writeFileSync("storage.json",`[{"title": "empty", "color": "red", "value": 1}]`);
-        
+        } else if (request.url.slice(0,8) === "/restore") {
+            writeFileSync("storage.json",`[{"title":"foo","color":"red","value":20},{"title":"bar","color":"ivory","value":100},{"title": "gouda", "color": "orange", "value": 10}]`);
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
             response.end("<!doctype html><html><body>Server is working</body></html>");
