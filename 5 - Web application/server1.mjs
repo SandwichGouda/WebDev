@@ -101,6 +101,8 @@ function webserver( request, response ) {
             let storage_ = remove(storage,index);
 
             writeFileSync("storage.json",JSON.stringify(storage_));
+        } else if (request.url.slice(0,6) === "/clear") {
+            writeFileSync("storage.json",`[{"title": "empty", "color": "red", "value": 1}]`);
         
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
