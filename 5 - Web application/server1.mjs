@@ -64,6 +64,11 @@ function webserver( request, response ) {
                 // The response.end is important, it allows to set the HTML responded
                 // It also sens the response ! (!!!)(imporant : that means you can't set headers afterwards)
             }
+        } else if (request.url === "/Data") {
+            console.log('fetched')
+            let storage = readFileSync("storage.json").toString();
+            response.setHeader("Content-Type", mimeTypes["json"]);
+            response.end(storage);
         
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
