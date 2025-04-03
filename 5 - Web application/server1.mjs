@@ -93,6 +93,14 @@ function webserver( request, response ) {
             console.log(color);
             console.log(storage);
             */
+        } else if (request.url.slice(0,7) === "/remove") {
+            let index = +request.url.slice(14);
+
+            let storage = JSON.parse(readFileSync("storage.json").toString());
+            
+            let storage_ = remove(storage,index);
+
+            writeFileSync("storage.json",JSON.stringify(storage_));
         
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
