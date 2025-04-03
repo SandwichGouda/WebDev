@@ -69,6 +69,30 @@ function webserver( request, response ) {
             let storage = readFileSync("storage.json").toString();
             response.setHeader("Content-Type", mimeTypes["json"]);
             response.end(storage);
+        } else if (request.url.slice(0,4) === "/add") {
+            let req = request.url.slice(5);
+            let t = req.split("&");
+            let title = t[0].slice(6);
+            let value = t[1].slice(6);
+            let color = t[2].slice(6);
+
+            let storage = JSON.parse(readFileSync("storage.json").toString());
+
+            let newObj = {
+                "title" : title,
+                "color" : color,
+                "value" : value,
+            };
+
+            storage.push(newObj);
+
+            writeFileSync("storage.json",JSON.stringify(storage));
+            /*
+            console.log(title);
+            console.log(value);
+            console.log(color);
+            console.log(storage);
+            */
         
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
