@@ -65,7 +65,6 @@ function webserver( request, response ) {
                 // It also sens the response ! (!!!)(imporant : that means you can't set headers afterwards)
             }
         } else if (request.url === "/Data") {
-            console.log('fetched')
             let storage = readFileSync("storage.json").toString();
             response.setHeader("Content-Type", mimeTypes["json"]);
             response.end(storage);
@@ -93,6 +92,7 @@ function webserver( request, response ) {
             console.log(color);
             console.log(storage);
             */
+            response.end();
         } else if (request.url.slice(0,7) === "/remove") {
             let index = +request.url.slice(14);
 
@@ -101,16 +101,20 @@ function webserver( request, response ) {
             let storage_ = remove(storage,index);
 
             writeFileSync("storage.json",JSON.stringify(storage_));
+            response.end();
         } else if (request.url.slice(0,6) === "/clear") {
             writeFileSync("storage.json",`[{"title": "empty", "color": "red", "value": 1}]`);
+            response.end();
         } else if (request.url.slice(0,8) === "/restore") {
+            console.log("restore")
             writeFileSync("storage.json",`[{"title":"foo","color":"red","value":20},{"title":"bar","color":"ivory","value":100},{"title": "gouda", "color": "orange", "value": 10}]`);
+            response.end();
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
             response.end("<!doctype html><html><body>Server is working</body></html>");
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 

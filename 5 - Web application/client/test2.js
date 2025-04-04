@@ -20,19 +20,23 @@ function showTxt(event) {
 }
 
 function addElement(event) {
-    fetch("../../add?title="+titleTF.value+"&value="+valueTF.value+"&color="+colorTF.value);
+    fetch("../../add?title="+titleTF.value+"&value="+valueTF.value+"&color="+colorTF.value)
+    .then( () => (1));
 }
 
 function removeElement(event) {
-    fetch("../../remove?index="+indexTF.value);
+    fetch("../../remove?index="+indexTF.value)
+    .then( () => (1));
 }
 
 function clear(event) {
-    fetch("../../clear");
+    fetch("../../clear")
+    .then( () => (1));
 }
 
 function restore(event) {
-    fetch("../../restore");
+    fetch("../../restore")
+    .then( () => (1));
 }
 
 showButton.addEventListener("click", showTxt);
