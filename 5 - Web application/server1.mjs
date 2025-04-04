@@ -71,19 +71,26 @@ function webserver( request, response ) {
         } else if (request.url.slice(0,4) === "/add") {
             let req = request.url.slice(5);
             let t = req.split("&");
+            console.log(req,t);
             let title = t[0].slice(6);
             let value = t[1].slice(6);
             let color = t[2].slice(6);
+
+            console.log(value, parseInt(value))
 
             let storage = JSON.parse(readFileSync("storage.json").toString());
 
             let newObj = {
                 "title" : title,
                 "color" : color,
-                "value" : value,
+                "value" : parseInt(value),
             };
 
             storage.push(newObj);
+
+            console.log(storage);
+
+            console.log(JSON.stringify(storage));
 
             writeFileSync("storage.json",JSON.stringify(storage));
             /*
