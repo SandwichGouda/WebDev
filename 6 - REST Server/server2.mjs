@@ -28,7 +28,6 @@ app.get('/nbpapers', (req, res) => {
 });
 
 app.get('/byauthor/:author', (req, res) => {
-    console.log("caca")
     let db = JSON.parse(dbjson);
     let author = req.params["author"];
     let list = [] ;
@@ -37,7 +36,20 @@ app.get('/byauthor/:author', (req, res) => {
             list.push(paper);
         }
     }
-    res.type("json");
+    res.type("text/plain");
+    res.send(list.length);
+});
+
+app.get('/papersdesc/:chunk', (req, res) => {
+    let db = JSON.parse(dbjson);
+    let chunk = req.params["chunk"];
+    let list = [] ;
+    for (let paper of db) {
+        if (paper["authors"].some(obj => obj.toLowerCase().includes(chunk.toLowerCase()))) {
+            list.push(paper);
+        }
+    }
+    res.type("application/json");
     res.send(list);
 });
 
