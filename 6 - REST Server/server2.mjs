@@ -22,6 +22,11 @@ app.get('/clean', (req, res) => {
     console.log("db.json reloaded");
 });
 
+app.get('/nbpapers', (req, res) => {
+    res.type('txt');
+    res.send(""+JSON.parse(dbjson).length);
+});
+
 
 
 let port = process.argv[2];
