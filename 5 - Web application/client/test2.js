@@ -6,7 +6,7 @@ let removeButton = document.getElementById("REMOVE");
 let clearButton = document.getElementById("CLEAR");
 let restoreButton = document.getElementById("RESTORE");
 let showPiechartButton = document.getElementById("PIEB");
-
+let showPiechartLocalButton = document.getElementById("LOC_PIE_BUTTON");
 
 let showPlace = document.getElementById("MAINSHOW");
 
@@ -56,3 +56,4 @@ removeButton.addEventListener("click", removeElement);
 clearButton.addEventListener("click", clear);
 restoreButton.addEventListener("click", restore);
 showPiechartButton.addEventListener("click", showPiechart);
+showPiechartLocalButton.addEventListener("click", showPiechart);

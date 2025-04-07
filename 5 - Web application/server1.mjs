@@ -123,7 +123,11 @@ function webserver( request, response ) {
             let rfs = readFileSync("piechart.svg");
             response.end(rfs);
 
-        
+        } else if (request.url.slice(0,6).toLowerCase() === "/data") {
+            console.log("pchart");
+            response.setHeader("Content-Type", "image/svg+xml; charset=utf-8"); 
+            let rfs = readFileSync("piechart.svg");
+            response.end(rfs);
 
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
