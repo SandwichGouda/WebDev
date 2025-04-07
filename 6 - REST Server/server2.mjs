@@ -27,7 +27,19 @@ app.get('/nbpapers', (req, res) => {
     res.send(""+JSON.parse(dbjson).length);
 });
 
-
+app.get('/byauthor/:author', (req, res) => {
+    console.log("caca")
+    let db = JSON.parse(dbjson);
+    let author = req.params["author"];
+    let list = [] ;
+    for (let paper of db) {
+        if (paper["authors"].some(obj => obj.toLowerCase() === author.toLowerCase())) {
+            list.push(paper);
+        }
+    }
+    res.type("json");
+    res.send(list);
+});
 
 let port = process.argv[2];
 // server starting
