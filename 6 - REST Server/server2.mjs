@@ -16,6 +16,13 @@ let dbjson = readFileSync("server/db.json").toString();
 
 // list of routes
 app.get('/', (req, res) => res.send('Hi'));
+app.get('/kill', (req, res) => process.exit(0));
+app.get('/clean', (req, res) => {
+    dbjson = readFileSync("server/db.json");
+    console.log("db.json reloaded");
+});
+
+
 
 let port = process.argv[2];
 // server starting
