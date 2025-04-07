@@ -79,6 +79,19 @@ app.get('/titlelist/:authorchunk', (req, res) => {
     res.send(list);
 });
 
+app.get('/ref/:key', (req, res) => {
+    let db = JSON.parse(dbjson);
+    let key = req.params["key"];
+    console.log(key);
+    for (let paper of db) {
+        if (paper["key"] === key) {
+            res.type("application/json");
+            res.send(JSON.stringify(paper));
+            break
+        }
+    }
+});
+
 let port = process.argv[2];
 // server starting
 app.listen(port, () => console.log('Example app listening on port '+port+'!'));
