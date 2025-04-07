@@ -53,6 +53,19 @@ app.get('/papersdesc/:chunk', (req, res) => {
     res.send(list);
 });
 
+app.get('/titlelist/:authorchunk', (req, res) => {
+    let db = JSON.parse(dbjson);
+    let authorchunk = req.params["authorchunk"];
+    let list = [] ;
+    for (let paper of db) {
+        if (paper["authors"].some(obj => obj.toLowerCase().includes(authorchunk.toLowerCase()))) {
+            list.push(paper["title"]);
+        }
+    }
+    res.type("application/json");
+    res.send(list);
+});
+
 let port = process.argv[2];
 // server starting
 app.listen(port, () => console.log('Example app listening on port '+port+'!'));
