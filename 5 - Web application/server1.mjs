@@ -116,6 +116,15 @@ function webserver( request, response ) {
             console.log("restore")
             writeFileSync("storage.json",`[{"title":"foo","color":"red","value":20},{"title":"bar","color":"ivory","value":100},{"title": "gouda", "color": "orange", "value": 10}]`);
             response.end();
+
+        } else if (request.url.slice(0,7).toLowerCase() === "/pchart") {
+            console.log("pchart");
+            response.setHeader("Content-Type", "image/svg+xml; charset=utf-8"); 
+            let rfs = readFileSync("piechart.svg");
+            response.end(rfs);
+
+        
+
         } else {
             response.setHeader("Content-Type", "text/html; charset=utf-8");
             response.end("<!doctype html><html><body>Server is working</body></html>");

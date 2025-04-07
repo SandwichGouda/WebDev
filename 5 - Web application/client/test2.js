@@ -5,6 +5,8 @@ let addButton = document.getElementById("BUT_ADD");
 let removeButton = document.getElementById("REMOVE");
 let clearButton = document.getElementById("CLEAR");
 let restoreButton = document.getElementById("RESTORE");
+let showPiechartButton = document.getElementById("PIEB");
+
 
 let showPlace = document.getElementById("MAINSHOW");
 
@@ -39,8 +41,18 @@ function restore(event) {
     .then( () => (1));
 }
 
+function showPiechart(event) {
+    fetch("../../pchart")
+    .then(response => response.text())
+    .then(svgtxt => {
+        console.log("aa");
+        showPlace.innerHTML = svgtxt;
+    });
+}
+
 showButton.addEventListener("click", showTxt);
 addButton.addEventListener("click", addElement);
 removeButton.addEventListener("click", removeElement);
 clearButton.addEventListener("click", clear);
 restoreButton.addEventListener("click", restore);
+showPiechartButton.addEventListener("click", showPiechart);
