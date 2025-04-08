@@ -19,128 +19,170 @@ let db = JSON.parse(dbjson);
 app.get('/', (req, res) => res.send('Hi'));
 app.get('/kill', (req, res) => process.exit(0));
 app.get('/clean', (req, res) => {
-    dbjson = readFileSync("server/db.json");
-    db = JSON.parse(dbjson);
-    console.log("db.json reloaded");
+    try {
+        dbjson = readFileSync("server/db.json");
+        db = JSON.parse(dbjson);
+        console.log("db.json reloaded");
+        res.type("text/plain");
+        res.send("OK");
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 app.get('/nbpapers', (req, res) => {
-    res.type('txt');
-    res.send(""+JSON.parse(dbjson).length);
+    try {
+        res.type('txt');
+        res.send(""+JSON.parse(dbjson).length);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 app.get('/byauthor/:author', (req, res) => {
-    let author = req.params["author"];
-    let list = [] ;
-    for (let paper of db) {
-        if (paper["authors"].some(obj => obj.toLowerCase() === author.toLowerCase())) {
-            list.push(paper);
+    try {
+        let author = req.params["author"];
+        let list = [] ;
+        for (let paper of db) {
+            if (paper["authors"].some(obj => obj.toLowerCase() === author.toLowerCase())) {
+                list.push(paper);
+            }
         }
+        res.type("text/plain");
+        res.send(list.length);
+    } catch (error) {
+        console.error(error);
     }
-    res.type("text/plain");
-    res.send(list.length);
 });
 
 app.get('/papersdesc/:chunk', (req, res) => {
-    let chunk = req.params["chunk"];
-    let list = [] ;
-    for (let paper of db) {
-        if (paper["authors"].some(obj => obj.toLowerCase().includes(chunk.toLowerCase()))) {
-            list.push(paper);
+    try {
+        let chunk = req.params["chunk"];
+        let list = [] ;
+        for (let paper of db) {
+            if (paper["authors"].some(obj => obj.toLowerCase().includes(chunk.toLowerCase()))) {
+                list.push(paper);
+            }
         }
+        res.type("application/json");
+        res.send(list);
+    } catch (error) {
+        console.error(error);
     }
-    res.type("application/json");
-    res.send(list);
 });
 
 app.get('/titlelist/:authorchunk', (req, res) => {
-    let authorchunk = req.params["authorchunk"];
-    let list = [] ;
-    for (let paper of db) {
-        if (paper["authors"].some(obj => obj.toLowerCase().includes(authorchunk.toLowerCase()))) {
-            list.push(paper["title"]);
+    try {
+        let authorchunk = req.params["authorchunk"];
+        let list = [] ;
+        for (let paper of db) {
+            if (paper["authors"].some(obj => obj.toLowerCase().includes(authorchunk.toLowerCase()))) {
+                list.push(paper["title"]);
+            }
         }
+        res.type("application/json");
+        res.send(list);
+    } catch (error) {
+        console.error(error);
     }
-    res.type("application/json");
-    res.send(list);
 });
 
 app.get('/titlelist/:authorchunk', (req, res) => {
-    let authorchunk = req.params["authorchunk"];
-    let list = [] ;
-    for (let paper of db) {
-        if (paper["authors"].some(obj => obj.toLowerCase().includes(authorchunk.toLowerCase()))) {
-            list.push(paper["title"]);
+    try {
+        let authorchunk = req.params["authorchunk"];
+        let list = [] ;
+        for (let paper of db) {
+            if (paper["authors"].some(obj => obj.toLowerCase().includes(authorchunk.toLowerCase()))) {
+                list.push(paper["title"]);
+            }
         }
+        res.type("application/json");
+        res.send(list);
+    } catch (error) {
+        console.error(error);
     }
-    res.type("application/json");
-    res.send(list);
 });
 
 app.get('/ref/:key', (req, res) => {
-    let key = req.params["key"];
-    let found = false ;
-    for (let paper of db) {
-        if (paper["key"] === key) {
-            res.type("application/json");
-            res.send(JSON.stringify(paper));
-            found = true; 
-            break;
+    try {
+        let key = req.params["key"];
+        let found = false ;
+        for (let paper of db) {
+            if (paper["key"] === key) {
+                res.type("application/json");
+                res.send(JSON.stringify(paper));
+                found = true; 
+                break;
+            }
         }
-    }
-    if (!found) {
-        res.type("application/json");
-        res.send("[]");
+        if (!found) {
+            res.type("application/json");
+            res.send("[]");
+        }
+    } catch (error) {
+        console.error(error);
     }
 });
 
 app.delete('/ref/:key', (req, res) => {
-    let key = req.params["key"];
-    for (let k in db) {
-        if (db[k]["key"] === key) {
-            delete db[k];
-            break
+    try {
+        let key = req.params["key"];
+        for (let k in db) {
+            if (db[k]["key"] === key) {
+                delete db[k];
+                break
+            }
         }
+        res.type("text/plain");
+        res.send("OK");
+    } catch (error) {
+        console.error(error);
     }
-    res.type("text/plain");
-    res.send("OK");
 });
 
 app.use(express.json());
 
 app.post('/ref/:key', (req, res) => {
-    let key = req.params["key"];
-    let newRef = req.body;
+    try {
+        let key = req.params["key"];
+        let newRef = req.body;
 
-    if (newRef.key !== key) {
-        console.log("Key mismatch between URL and body");
+        if (newRef.key !== key) {
+            console.log("Key mismatch between URL and body");
+        }
+
+        console.log(newRef);
+
+        db.push(newRef);
+        dbjson = JSON.stringify(db);
+
+        res.type("text/plain");
+        res.send("OK");
+    } catch (error) {
+        console.error(error);
     }
-
-    console.log(newRef);
-
-    db.push(newRef);
-    dbjson = JSON.stringify(db);
-
-    res.type("text/plain");
-    res.send("OK");
 });
 
 app.put('/ref/:key', (req, res) => {
-    let key = req.params["key"];
-    let newRef = req.body;
+    try {
+        let key = req.params["key"];
+        let newRef = req.body;
 
-    console.log(newRef);
+        console.log(newRef);
 
-    for (let k in db) {
-        if (db[k]["key"] === key) {
-            for (let field in newRef) {
-                db[k][field] = newRef[field];
+        for (let k in db) {
+            if (db[k]["key"] === key) {
+                for (let field in newRef) {
+                    db[k][field] = newRef[field];
+                }
             }
         }
-    }
 
-    res.type("text/plain");
-    res.send("OK");
+        res.type("text/plain");
+        res.send("OK");
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 
