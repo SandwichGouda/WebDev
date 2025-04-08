@@ -143,5 +143,5 @@ const server = createServer(webserver);
 
 let port = process.argv[2];
 // start listening
-server.listen(process.argv[2], (err) => {});
+server.listen(port, (err) => {});
 
