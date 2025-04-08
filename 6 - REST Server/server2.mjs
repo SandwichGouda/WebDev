@@ -17,7 +17,13 @@ let db = JSON.parse(dbjson);
 
 // list of routes
 app.get('/', (req, res) => res.send('Hi'));
-app.get('/kill', (req, res) => process.exit(0));
+
+app.get('/kill', (req, res) => {
+    res.type("text/plain");
+    res.send("Stop");
+    process.exit(0);
+});
+
 app.get('/clean', (req, res) => {
     try {
         dbjson = readFileSync("server/db.json");
@@ -33,7 +39,7 @@ app.get('/clean', (req, res) => {
 app.get('/nbpapers', (req, res) => {
     try {
         res.type('txt');
-        res.send(""+JSON.parse(dbjson).length);
+        res.send(""+db.length);
     } catch (error) {
         console.error(error);
     }
@@ -44,7 +50,7 @@ app.get('/byauthor/:author', (req, res) => {
         let author = req.params["author"];
         let list = [] ;
         for (let paper of db) {
-            if (paper["authors"].some(obj => obj.toLowerCase() === author.toLowerCase())) {
+            if (paper["authors"].some(obj => obj.toLowerCase().includes(author.toLowerCase()))) {
                 list.push(paper);
             }
         }
@@ -103,6 +109,15 @@ app.get('/titlelist/:authorchunk', (req, res) => {
     }
 });
 
+app.get('/ref', (req, res) => {
+    try {
+        res.type("text/plain");
+        res.send("ref");
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.get('/ref/:key', (req, res) => {
     try {
         let key = req.params["key"];
@@ -129,8 +144,7 @@ app.delete('/ref/:key', (req, res) => {
         let key = req.params["key"];
         for (let k in db) {
             if (db[k]["key"] === key) {
-                delete db[k];
-                break
+                db.pop(k);
             }
         }
         res.type("text/plain");
@@ -142,16 +156,9 @@ app.delete('/ref/:key', (req, res) => {
 
 app.use(express.json());
 
-app.post('/ref/:key', (req, res) => {
+app.post('/ref', (req, res) => {
     try {
-        let key = req.params["key"];
         let newRef = req.body;
-
-        if (newRef.key !== key) {
-            console.log("Key mismatch between URL and body");
-        }
-
-        console.log(newRef);
 
         db.push(newRef);
         dbjson = JSON.stringify(db);
