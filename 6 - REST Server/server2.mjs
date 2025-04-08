@@ -13,12 +13,14 @@ const app = express();
 app.use(morgan('tiny'));  
 
 let dbjson = readFileSync("server/db.json").toString();
+let db = JSON.parse(dbjson);
 
 // list of routes
 app.get('/', (req, res) => res.send('Hi'));
 app.get('/kill', (req, res) => process.exit(0));
 app.get('/clean', (req, res) => {
     dbjson = readFileSync("server/db.json");
+    db = JSON.parse(dbjson);
     console.log("db.json reloaded");
 });
 
@@ -28,7 +30,6 @@ app.get('/nbpapers', (req, res) => {
 });
 
 app.get('/byauthor/:author', (req, res) => {
-    let db = JSON.parse(dbjson);
     let author = req.params["author"];
     let list = [] ;
     for (let paper of db) {
@@ -41,7 +42,6 @@ app.get('/byauthor/:author', (req, res) => {
 });
 
 app.get('/papersdesc/:chunk', (req, res) => {
-    let db = JSON.parse(dbjson);
     let chunk = req.params["chunk"];
     let list = [] ;
     for (let paper of db) {
@@ -54,7 +54,6 @@ app.get('/papersdesc/:chunk', (req, res) => {
 });
 
 app.get('/titlelist/:authorchunk', (req, res) => {
-    let db = JSON.parse(dbjson);
     let authorchunk = req.params["authorchunk"];
     let list = [] ;
     for (let paper of db) {
@@ -67,7 +66,6 @@ app.get('/titlelist/:authorchunk', (req, res) => {
 });
 
 app.get('/titlelist/:authorchunk', (req, res) => {
-    let db = JSON.parse(dbjson);
     let authorchunk = req.params["authorchunk"];
     let list = [] ;
     for (let paper of db) {
@@ -80,17 +78,71 @@ app.get('/titlelist/:authorchunk', (req, res) => {
 });
 
 app.get('/ref/:key', (req, res) => {
-    let db = JSON.parse(dbjson);
     let key = req.params["key"];
-    console.log(key);
+    let found = false ;
     for (let paper of db) {
         if (paper["key"] === key) {
             res.type("application/json");
             res.send(JSON.stringify(paper));
+            found = true; 
+            break;
+        }
+    }
+    if (!found) {
+        res.type("application/json");
+        res.send("[]");
+    }
+});
+
+app.delete('/ref/:key', (req, res) => {
+    let key = req.params["key"];
+    for (let k in db) {
+        if (db[k]["key"] === key) {
+            delete db[k];
             break
         }
     }
+    res.type("text/plain");
+    res.send("OK");
 });
+
+app.use(express.json());
+
+app.post('/ref/:key', (req, res) => {
+    let key = req.params["key"];
+    let newRef = req.body;
+
+    if (newRef.key !== key) {
+        console.log("Key mismatch between URL and body");
+    }
+
+    console.log(newRef);
+
+    db.push(newRef);
+    dbjson = JSON.stringify(db);
+
+    res.type("text/plain");
+    res.send("OK");
+});
+
+app.put('/ref/:key', (req, res) => {
+    let key = req.params["key"];
+    let newRef = req.body;
+
+    console.log(newRef);
+
+    for (let k in db) {
+        if (db[k]["key"] === key) {
+            for (let field in newRef) {
+                db[k][field] = newRef[field];
+            }
+        }
+    }
+
+    res.type("text/plain");
+    res.send("OK");
+});
+
 
 let port = process.argv[2];
 // server starting
